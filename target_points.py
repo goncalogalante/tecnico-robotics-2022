@@ -76,7 +76,7 @@ plt.ylim(0,image.shape[1]*0.0264583333)
 plt.title("Target points in centimeters (cm)")
 plt.show()
 
-# x,y target points according a 25x25 cm square
+# x,y target points according to a 25x25 cm square
 y, x = target_points.T
 maximum = max(image.shape[0], image.shape[1])
 k = 25/maximum
