@@ -83,7 +83,7 @@ def start(self):
 
 def homepos(self):
     self.send("LISTPV POSITION " + "\r")
-    msg = self.read(self)
+    msg = self.read_and_wait(self)
     msg = msg.decode('UTF-8')
     msg = "1:0 2:0 3:0 4:0 5:0 X:1342 Y:2345 Z:340 P:640 R:180"
     msg = msg.split()
