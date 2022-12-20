@@ -9,7 +9,7 @@ import argparse
 # O default está com test_draw_1.png
 
 argparser = argparse.ArgumentParser()
-argparser.add_argument("--image", type=str, default="test_draw_1.png", help="path to input image")
+argparser.add_argument("--image", type=str, default="test_draw_1.png")
 args = vars(argparser.parse_args())
 
 # load the image and display it
