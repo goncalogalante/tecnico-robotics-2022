@@ -88,3 +88,9 @@ plt.ylim(0,25)
 plt.title("Target points in cm according to a 25x25 cm square")
 plt.show()
 
+
+target_points = target_points*k
+target_points = np.round(target_points, 1)
+target_points = target_points[:,0]
+print(target_points)
+
