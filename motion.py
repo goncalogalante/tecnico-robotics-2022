@@ -3,6 +3,7 @@ import serial
 import time
 import math
 import datetime
+from target_points import image_processing
 
 # pôr pos inicial com comando (centro ou cantos)
 # receber coordenadas da pos inicial
@@ -67,8 +68,6 @@ class scorbot:
         self.send("MOVE POS1 " + "\r")
         time.sleep(1)
 
-# pts=[i for i in zip(x[0], y[0])]
-
 def roll_calc(self,i,f):
     ()
 
@@ -117,4 +116,6 @@ start(bot)
 # homepos(bot)
 bot.initpos(bot,3767,-1227,500,0,0)
 bot.movestr(bot,bot.ipos,[0,0])
-draw(bot,pts)
+# draw(bot,pts)
+
+image_processing("test_draw_1.png")
