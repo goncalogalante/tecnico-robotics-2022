@@ -43,8 +43,8 @@ def image_processing(image):
         cv2.drawContours(output, [approx], -1, (0, 255, 0), 3)
         text = "eps={:.4f}, num_pts={}".format(eps, len(approx))
         # show the approximated contour image
-        print("[INFO] {}".format(text))
-        #cv2.imwrite("{}.png".format(text), output)
+        # print("[INFO] {}".format(text))
+        # cv2.imwrite("{}.png".format(text), output)
         
         
     # best result
@@ -77,18 +77,29 @@ def image_processing(image):
     # plt.show()
 
     # x,y target points according to a 25x25 cm square
-    y, x = target_points.T
+    cnt = 0
+    target_points_new = []
+    alpha = 30
+    for target_point in target_points:
+        if cnt < len(target_points)-alpha:
+            target_points_new.append(target_point)
+            cnt += 1
+    target_points_new = np.asarray(target_points_new)
+
+    y, x = target_points_new.T
     maximum = max(image.shape[0], image.shape[1])
     k = 2500/maximum
     y = y*k
     x = x*k
     y = np.round(y)
+    # y = int(y)
     x = np.round(x)
-    # plt.scatter(x,y)
-    # plt.xlim(0,25)
-    # plt.ylim(0,25)
-    # plt.title("Target points in cm according to a 25x25 cm square")
-    # plt.show()
+    # x = int(x)
+    plt.scatter(x,y)
+    plt.xlim(0,2500)
+    plt.ylim(0,2500)
+    plt.title("Target points in cm according to a 25x25 cm square")
+    plt.show()
 
     # target_points = target_points*k
     # target_points = np.round(target_points, 1)
@@ -98,3 +109,6 @@ def image_processing(image):
     pts=[i for i in zip(x[0], y[0])]
     # pts=round(pts)
     print(pts)
+    return pts
+
+image_processing("test_draw_2.png")

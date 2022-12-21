@@ -27,7 +27,7 @@ class scorbot:
     def initpos(self,aux,x,y,z,p,r):
         self.ipos[0]=x
         self.ipos[1]=y
-        self.ipos[2]=z
+        self.ipos[2]=z+500
         self.ipos[3]=r
         self.pitch=p
         pass
@@ -58,15 +58,27 @@ class scorbot:
         return output
 
     def movestr(self, aux, coordi, coordf):
-        self.send("SETPVC POS1 X " + str(self.ipos[0]+coordf[0]) + "\r")
+        self.send("SETPVC POS1 X " + str(self.ipos[0]+int(coordf[0])) + "\r")
         time.sleep(0.5)
-        self.send("SETPVC POS1 Y " + str(self.ipos[1]+coordf[1]) + "\r")
+        self.send("SETPVC POS1 Y " + str(self.ipos[1]+int(coordf[1])) + "\r")
+        time.sleep(0.5)
+        self.send("SETPVC POS1 Z " + str(self.ipos[2]-500) + "\r")
+        time.sleep(0.5)
+        # rf=roll_calc(self,coordi,coordf)
+        self.send("MOVE POS1 " + "\r")
+        time.sleep(1)
+
+    def movehome(self,aux):
+        self.send("SETPVC POS1 X " + str(self.ipos[0]) + "\r")
+        time.sleep(0.5)
+        self.send("SETPVC POS1 Y " + str(self.ipos[1]) + "\r")
         time.sleep(0.5)
         self.send("SETPVC POS1 Z " + str(self.ipos[2]) + "\r")
         time.sleep(0.5)
         # rf=roll_calc(self,coordi,coordf)
         self.send("MOVE POS1 " + "\r")
         time.sleep(1)
+    
 
 def roll_calc(self,i,f):
     ()
@@ -77,31 +89,31 @@ def start(self):
        The first position is beforehand manually selected"""
     self.send("CON " + "\r")
     time.sleep(0.5)
-    self.send("SPEED 15 " + "\r")
+    self.send("SPEED 5 " + "\r")
     time.sleep(0.5)
 
 
 def homepos(self):
+    # self.com.flush()
+    msg = self.read_and_wait(self,2) # LISTPV POSITION
+    msg = self.read_and_wait(self,2) # Joint coordinates
+    msg = self.read_and_wait(self,2) # Cartesian coordinates
     self.send("LISTPV POSITION " + "\r")
-    msg = self.read_and_wait(self,0.1) # LISTPV POSITION
-    msg = self.read_and_wait(self,0.1) # Joint coordinates
-    msg = self.read_and_wait(self,0.1) # Cartesian coordinates
-    msg = "X: 3767    Y:-1727    Z:-723     P:-974     R:-201"
-    msg = msg.split()
-    print(">> ")
-    print(msg[0])
-    print(msg[1])
-    # x = msg[5]
-    # x = x[2:]
-    # y = msg[6]
-    # y = y[2:]
-    # z = msg[7]
-    # z = z[2:]
-    # p = msg[8]
-    # p = p[2:]
-    # r = msg[6]
-    # r = r[2:]
-    # self.initpos(self,x,y,z,p,r)
+    msg = self.com.in_waiting
+    msg = self.com.read(msg)
+    # msg = "X: 3767    Y:-1727    Z:-723     P:-974     R:-201"
+    msg = msg.split("X")
+    # print(">> ")
+    x = int(msg[1])
+    y = msg[2]
+    y = int(y[2:])
+    z = msg[3]
+    z = int(z[2:])
+    p = msg[4]
+    p = p[2:]
+    r = msg[5]
+    r = int(r[2:])
+    self.initpos(self,x,y,z,p,r)
 
 def draw(self,pts):
     for i in range(len(pts)):
@@ -114,8 +126,12 @@ def draw(self,pts):
 bot=scorbot()
 start(bot)
 # homepos(bot)
-bot.initpos(bot,3767,-1227,500,0,0)
-bot.movestr(bot,bot.ipos,[0,0])
-# draw(bot,pts)
+bot.initpos(bot,3767,-1227,-845,0,0)
+bot.movehome(bot)
 
-image_processing("test_draw_1.png")
+pts = image_processing("test_draw_1.png")
+draw(bot,pts)
+# print(bot.ipos[0])
+# print(bot.ipos[1])
+# print(bot.ipos[2])
+# print(bot.ipos[3])
