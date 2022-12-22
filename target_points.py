@@ -95,11 +95,11 @@ def image_processing(image):
     # y = int(y)
     x = np.round(x)
     # x = int(x)
-    plt.scatter(x,y)
-    plt.xlim(0,2500)
-    plt.ylim(0,2500)
-    plt.title("Target points in cm according to a 25x25 cm square")
-    plt.show()
+    # plt.scatter(x,y)
+    # plt.xlim(0,2500)
+    # plt.ylim(0,2500)
+    # plt.title("Target points in cm according to a 25x25 cm square")
+    # plt.show()
 
     # target_points = target_points*k
     # target_points = np.round(target_points, 1)
@@ -108,7 +108,8 @@ def image_processing(image):
 
     pts=[i for i in zip(x[0], y[0])]
     # pts=round(pts)
-    print(pts)
+    # print(pts)
     return pts
 
-image_processing("test_draw_2.png")
+pts = image_processing("test_draw_2.png")
+# print(pts)
