@@ -15,7 +15,7 @@ from target_points import image_processing
 class scorbot:
     def __init__ (self):
         if serial:
-            self.com = serial.Serial("COM3", baudrate=9600, bytesize=8, timeout=2, parity="N", xonxoff=0)
+            self.com = serial.Serial("COM4", baudrate=9600, bytesize=8, timeout=2, parity="N", xonxoff=0)
         self.ipos=[0,0,0,0]
         self.pitch=0
         pass
@@ -62,11 +62,11 @@ class scorbot:
         time.sleep(0.5)
         self.send("SETPVC 1 Y " + str(self.ipos[1]+int(coordf[1])) + "\r")
         time.sleep(0.5)
-        self.send("SETPVC 1 Z " + str(self.ipos[2]) + "\r")
+        # self.send("SETPVC 1 Z " + str(self.ipos[2]) + "\r")
         time.sleep(0.5)
         # rf=roll_calc(self,coordi,coordf)
         self.send("MOVE 1 " + "\r")
-        time.sleep(1)
+        time.sleep(2)
 
     def movehome(self,aux):
         self.send("SETPVC 1 X " + str(self.ipos[0]) + "\r")
@@ -77,7 +77,9 @@ class scorbot:
         time.sleep(0.5)
         # rf=roll_calc(self,coordi,coordf)
         self.send("MOVE 1 " + "\r")
-        time.sleep(1)
+        time.sleep(1.5)
+        self.send("HERE 1 " + "\r")
+        time.sleep(1.5)
     
 
 def roll_calc(self,i,f):
@@ -93,7 +95,7 @@ def start(self):
     time.sleep(0.5)
 
 
-def homepos(self):
+# def homepos(self):
     # self.com.flush()
     # msg = self.read_and_wait(self,2) # LISTPV POSITION
     # msg = self.read_and_wait(self,2) # Joint coordinates
@@ -103,18 +105,19 @@ def homepos(self):
     # msg = self.com.read(msg)
     # msg = "X: 3767    Y:-1727    Z:-723     P:-974     R:-201 >"
     # msg = msg.split("X")
-    msg = msg.split()
+    # msg = msg.split()
     # print(">> ")
-    x = int(msg[-6])
-    y = msg[-5]
-    y = int(y[2:])
-    z = msg[-4]
-    z = int(z[2:])
-    # p = msg[-3]
-    # p = p[2:]
-    r = msg[-2]
-    r = int(r[2:])
-    self.initpos(self,x,y,z,1,r)
+    # x = int(msg[-6])
+    # y = msg[-5]
+    # y = int(y[2:])
+    # z = msg[-4]
+    # z = int(z[2:])
+    # # p = msg[-3]
+    # # p = p[2:]
+    # r = msg[-2]
+    # r = int(r[2:])
+    # self.initpos(self,x,y,z,1,r)
+    ()
 
 def draw(self,pts):
     for i in range(len(pts)):
@@ -127,13 +130,14 @@ def draw(self,pts):
 bot=scorbot()
 start(bot)
 # homepos(bot)
-# bot.initpos(bot,5155,-464,1084,0,0) # Scorbot 1
-bot.initpos(bot,4499,-847,-730,0,0) # Scorbot 2
+bot.initpos(bot,4723,-362,1111,0,0) # Scorbot 1
+# bot.initpos(bot,4499,-847,-730,0,0) # Scorbot 2
 # bot.com.flush()
 bot.movehome(bot)
 
-pts = image_processing("test_draw_1.png")
+pts = image_processing("test_draw_2.png")
 draw(bot,pts)
+# bot.movehome(bot)
 # print(bot.ipos[0])
 # print(bot.ipos[1])
 # print(bot.ipos[2])
