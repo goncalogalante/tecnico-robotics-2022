@@ -99,6 +99,10 @@ class scorbot:
         time.sleep(0.5)
         self.send("MOVE 1 500" + "\r")
         time.sleep(0.6)
+
+    def create_vector(self,aux,coord):
+        self.send("DIMP A[1]")
+        ()
     
 
 def roll_calc(self,i,f):
@@ -152,11 +156,15 @@ def homepos(self):
     self.initpos(self,x,y,z,1,r)
 
 def draw(self,pts):
+
+    self.create_vector(self,self.ipos,pts[0])
+
     for i in range(len(pts)):
         if i==0:
-            self.movestr(self,self.ipos,pts[i])
-            self.read_and_wait(self,0.5)
-        self.movestr(self,pts[i-1],pts[i])
+            pass
+        if ((self.read_and_wait(self,0.5)) == ">"):
+                pass
+        self.add_vector(self,pts[i-1],pts[i])
         self.read_and_wait(self,0.5)
     self.moveup(self,pts[i-1])
     
