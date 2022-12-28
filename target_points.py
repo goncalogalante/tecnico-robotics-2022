@@ -79,16 +79,16 @@ def image_processing(image):
     # x,y target points according to a 25x25 cm square
     cnt = 0
     target_points_new = []
-    alpha = 30
-    for target_point in target_points:
-        if cnt < len(target_points)-alpha:
-            target_points_new.append(target_point)
-            cnt += 1
-    target_points_new = np.asarray(target_points_new)
+    # alpha = 30
+    # for target_point in target_points:
+    #     if cnt < len(target_points)-alpha:
+    #         target_points_new.append(target_point)
+    #         cnt += 1
+    # target_points_new = np.asarray(target_points_new)
 
-    y, x = target_points_new.T
+    y, x = target_points.T
     maximum = max(image.shape[0], image.shape[1])
-    k = 1500/maximum
+    k = 2000/maximum
     y = y*k
     x = x*k
     y = np.round(y)
