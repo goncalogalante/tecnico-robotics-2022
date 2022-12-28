@@ -41,7 +41,7 @@ def image_processing(image):
             contornos_aproximados.append(approx1)
             cv2.drawContours(img_contours, [approx1], -1, (0,255,0),3)
             text = "eps={:.4f}, num_pts={}".format(0.0003, len(approx1))
-            print("[INFO] {}".format(text))
+            # print("[INFO] {}".format(text))
             cv2.imwrite('Contorno_okkk.png'.format(c), img_contours)
 
         # Best result with eps = 0.0003
@@ -63,7 +63,7 @@ def image_processing(image):
 
         target_points_list = np.asarray(target_points_list)
         text = "num_target_pts={}".format(len(target_points_list))
-        print("[INFO Final] {}".format(text))
+        # print("[INFO Final] {}".format(text))
         
         # x,y target points to pixels
         y, x = target_points.T
@@ -95,7 +95,7 @@ def image_processing(image):
 
         y, x = target_points_list.T
         maximum = max(image.shape[0], image.shape[1])
-        k = 2000/maximum
+        k = 1800/maximum
         y = y*k
         x = x*k
         y = np.round(y)
@@ -139,7 +139,7 @@ def image_processing(image):
         
         target_points_list = approx # defining Target_points variable
         text = "num_target_pts={}".format(len(target_points_list))
-        print("[INFO Final] {}".format(text))
+        # print("[INFO Final] {}".format(text))
         # x,y target points to pixels
         y, x = target_points_list.T
         # plt.scatter(x,y)
@@ -170,7 +170,7 @@ def image_processing(image):
 
         y, x = target_points_list.T
         maximum = max(image.shape[0], image.shape[1])
-        k = 2000/maximum
+        k = 1800/maximum
         y = y*k
         x = x*k
         y = np.round(y)

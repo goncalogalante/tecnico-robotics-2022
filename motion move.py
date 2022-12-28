@@ -3,7 +3,7 @@ import serial
 import time
 import math
 import datetime
-from target_points import image_processing
+from target_points_v2 import image_processing
 
 # pôr pos inicial com comando (centro ou cantos)
 # receber coordenadas da pos inicial
@@ -173,6 +173,6 @@ print("Z:" + str(bot.ipos[2]))
 print("R:" + str(bot.ipos[3]))
 bot.movehome(bot)
 
-pts = image_processing("test_draw_1.png")
+pts = image_processing("test_draw_2.png")
 draw(bot,pts)
 bot.movehome(bot)
