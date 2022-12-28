@@ -46,7 +46,6 @@ def image_processing(image):
         # print("[INFO] {}".format(text))
         # cv2.imwrite("{}.png".format(text), output)
         
-        
     # best result
     best_eps = 0.0003 
     peri = cv2.arcLength(c, True)
@@ -57,6 +56,13 @@ def image_processing(image):
     #cv2.imwrite("Best Result{}.png".format(text), output)
 
     target_points = approx # defining target_points variable
+    counter = 0
+    target_points_list = []
+    if len(cnts)==1:
+        for target_point in target_points:
+            if counter < (len(target_points)/2)+2:
+                target_points_list.append(target_point)
+                counter += 1
 
     # x,y target points to pixels
     y, x = target_points.T
