@@ -72,7 +72,7 @@ class scorbot:
         self.send("SETPVC 1 Z " + str(self.ipos[2]-100) + "\r")
         time.sleep(0.5)
         # rf=roll_calc(self,coordi,coordf)
-        alfa = 1.2/1000
+        alfa = 1.5/1000
         move_time = round(100*(0.3 + alfa*dist((coordi[0],coordi[1]),(coordf[0],coordf[1]))))
         self.send("MOVE 1 " + str(move_time) + "\r")
         time.sleep(move_time/100)

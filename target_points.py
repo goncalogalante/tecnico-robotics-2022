@@ -64,6 +64,8 @@ def image_processing(image):
                 target_points_list.append(target_point)
                 counter += 1
 
+    target_points_list = np.asarray(target_points_list)
+    
     # x,y target points to pixels
     y, x = target_points.T
     # plt.scatter(x,y)
@@ -92,7 +94,7 @@ def image_processing(image):
     #         cnt += 1
     # target_points_new = np.asarray(target_points_new)
 
-    y, x = target_points.T
+    y, x = target_points_list.T
     maximum = max(image.shape[0], image.shape[1])
     k = 2000/maximum
     y = y*k
@@ -117,5 +119,5 @@ def image_processing(image):
     # print(pts)
     return pts
 
-pts = image_processing("test_draw_2.png")
+# pts = image_processing("test_draw_2.png")
 # print(pts)
