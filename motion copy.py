@@ -97,6 +97,8 @@ class scorbot:
         time.sleep(0.5)
         self.send("SETPVC 1 Z " + str(self.ipos[2]+100) + "\r")
         time.sleep(0.5)
+        self.send("MOVE 1 500" + "\r")
+        time.sleep(0.6)
     
 
 def roll_calc(self,i,f):
