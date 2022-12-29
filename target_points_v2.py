@@ -95,7 +95,7 @@ def image_processing(image):
 
         y, x = target_points_list.T
         maximum = max(image.shape[0], image.shape[1])
-        k = 1800/maximum
+        k = 1600/maximum
         y = y*k
         x = x*k
         y = np.round(y)
@@ -170,7 +170,7 @@ def image_processing(image):
 
         y, x = target_points_list.T
         maximum = max(image.shape[0], image.shape[1])
-        k = 1800/maximum
+        k = 1500/maximum
         y = y*k
         x = x*k
         y = np.round(y)

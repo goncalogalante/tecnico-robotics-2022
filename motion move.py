@@ -89,6 +89,8 @@ class scorbot:
         time.sleep(0.6)
         self.send("HERE 1 " + "\r")
         time.sleep(0.5)
+        self.send("SETPVC 1 Z " + str(self.ipos[2]-100) + "\r")
+        time.sleep(0.5)
     
     def moveup(self,aux,coord):
         self.send("SETPVC 1 X " + str(coord[0]) + "\r")
@@ -106,7 +108,7 @@ def roll_calc(self,i,f):
 
 
 def start(self):
-    """Start the robot, activating the axis and setting the speed to 50%
+    """Start the robot, activating the axis and setting the speed to 1%
        The first position is beforehand manually selected"""
     self.com.flushInput()
     time.sleep(1)
@@ -173,6 +175,6 @@ print("Z:" + str(bot.ipos[2]))
 print("R:" + str(bot.ipos[3]))
 bot.movehome(bot)
 
-pts = image_processing("test_draw_2.png")
+pts = image_processing("test_draw_1.png")
 draw(bot,pts)
 bot.movehome(bot)
