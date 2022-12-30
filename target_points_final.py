@@ -70,11 +70,11 @@ def image_processing(image):
         #y, x = target_points_list.T
         #y = y*0.0264583333
         #x = x*0.0264583333
-        # plt.scatter(x,y)
-        # plt.xlim(0,image.shape[0]*0.0264583333)
-        # plt.ylim(0,image.shape[1]*0.0264583333)
-        # plt.title("Target points in centimeters (cm)")
-        # plt.show()
+        #plt.scatter(x,y)
+        #plt.xlim(0,image.shape[0]*0.0264583333)
+        #plt.ylim(0,image.shape[1]*0.0264583333)
+        #plt.title("Target points in centimeters (cm)")
+        #plt.show()
 
         # x,y target points according to a 16x16 cm square
         y, x = target_points_list.T
@@ -129,11 +129,11 @@ def image_processing(image):
         #y, x = target_points_list.T
         #y = y*0.0264583333
         #x = x*0.0264583333
-        # plt.scatter(x,y)
-        # plt.xlim(0,image.shape[0]*0.0264583333)
-        # plt.ylim(0,image.shape[1]*0.0264583333)
-        # plt.title("Target points in centimeters (cm)")
-        # plt.show()
+        #plt.scatter(x,y)
+        #plt.xlim(0,image.shape[0]*0.0264583333)
+        #plt.ylim(0,image.shape[1]*0.0264583333)
+        #plt.title("Target points in centimeters (cm)")
+        #plt.show()
 
         # x,y target points according to a 15x15 cm square
         y, x = target_points_list.T
@@ -150,5 +150,5 @@ def image_processing(image):
         return pts
         
 
-pts = image_processing("test_draw_2.png")
-print(pts)
+pts = image_processing("test_draw_1.png")
+#print(pts)
