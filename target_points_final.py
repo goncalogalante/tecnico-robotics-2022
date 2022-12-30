@@ -154,5 +154,3 @@ def image_processing(image):
         
         return pts
         
-
-# pts = image_processing("test_draw_2.png")
