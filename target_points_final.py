@@ -6,7 +6,7 @@ import imutils
 
 # This function returns the target points
 def image_processing(image):
-   
+    
     # load the image and display it
     image = cv2.imread(image)
 
@@ -33,8 +33,8 @@ def image_processing(image):
             approx_aux = cv2.approxPolyDP(c, epsilon_aux,True)
             cv2.drawContours(img_contours, [approx_aux], -1, (0,255,0),3)
             text = "eps={:.4f}, num_pts={}".format(0.0003, len(approx_aux))
-            #print("[INFO] {}".format(text))
-            #cv2.imwrite('contornos_approx.png'.format(c), img_contours)
+
+            # cv2.imwrite('contornos_approx.png'.format(c), img_contours)
 
         
         # get the final target points approximation vector
@@ -59,22 +59,22 @@ def image_processing(image):
         target_points_list = np.asarray(target_points_list)
         
         # plot x,y target points to pixels
-        #y, x = target_points_list.T
-        #plt.scatter(x,y)
-        #plt.xlim(0,image.shape[0])
-        #plt.ylim(0,image.shape[1])
-        #plt.title("Target points in pixels")
-        #plt.show()
+        # y, x = target_points_list.T
+        # plt.scatter(x,y)
+        # plt.xlim(0,image.shape[0])
+        # plt.ylim(0,image.shape[1])
+        # plt.title("Target points in pixels")
+        # plt.show()
 
         # plot x,y target points to centimeters (cm)
-        #y, x = target_points_list.T
-        #y = y*0.0264583333
-        #x = x*0.0264583333
-        #plt.scatter(x,y)
-        #plt.xlim(0,image.shape[0]*0.0264583333)
-        #plt.ylim(0,image.shape[1]*0.0264583333)
-        #plt.title("Target points in centimeters (cm)")
-        #plt.show()
+        # y, x = target_points_list.T
+        # y = y*0.0264583333
+        # x = x*0.0264583333
+        # plt.scatter(x,y)
+        # plt.xlim(0,image.shape[0]*0.0264583333)
+        # plt.ylim(0,image.shape[1]*0.0264583333)
+        # plt.title("Target points in centimeters (cm)")
+        # plt.show()
 
         # x,y target points according to a 16x16 cm square
         y, x = target_points_list.T
@@ -101,7 +101,9 @@ def image_processing(image):
         # get the draw with the single vector containing both contours
         img_contours = np.zeros(image.shape)
         cv2.drawContours(img_contours, points, -1, (0,255,0), 4)
-        #cv2.imwrite('contornos_case2.png', img_contours)
+
+        # To get the image of the single vector containing both contours uncomment the following line
+        # cv2.imwrite('contornos_case2.png', img_contours)
         
         # convert all the points list into a numpy array
         points = np.asarray(points)
@@ -110,30 +112,27 @@ def image_processing(image):
         k = 0.0003
         peri = cv2.arcLength(points, True)
         approx = cv2.approxPolyDP(points,k*peri, True)
-        #output = image.copy()
-        #cv2.drawContours(output, [approx], -1, (0, 255, 0), 3)
-        #cv2.imwrite("contornos_case2_approx.png", output)
         
         # define the target points vector
         target_points_list = approx 
         
         # plot x,y target points to pixels
-        #y, x = target_points_list.T
-        #plt.scatter(x,y)
-        #plt.xlim(0,image.shape[0])
-        #plt.ylim(0,image.shape[1])
-        #plt.title("Target points in pixels")
-        #plt.show()
+        # y, x = target_points_list.T
+        # plt.scatter(x,y)
+        # plt.xlim(0,image.shape[0])
+        # plt.ylim(0,image.shape[1])
+        # plt.title("Target points in pixels")
+        # plt.show()
 
         # plot x,y target points to centimeters (cm)
-        #y, x = target_points_list.T
-        #y = y*0.0264583333
-        #x = x*0.0264583333
-        #plt.scatter(x,y)
-        #plt.xlim(0,image.shape[0]*0.0264583333)
-        #plt.ylim(0,image.shape[1]*0.0264583333)
-        #plt.title("Target points in centimeters (cm)")
-        #plt.show()
+        # y, x = target_points_list.T
+        # y = y*0.0264583333
+        # x = x*0.0264583333
+        # plt.scatter(x,y)
+        # plt.xlim(0,image.shape[0]*0.0264583333)
+        # plt.ylim(0,image.shape[1]*0.0264583333)
+        # plt.title("Target points in centimeters (cm)")
+        # plt.show()
 
         # x,y target points according to a 15x15 cm square
         y, x = target_points_list.T

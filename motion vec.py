@@ -2,15 +2,7 @@ import numpy as np
 import serial
 import time
 import math
-import datetime
 from target_points_v2 import image_processing
-
-# pôr pos inicial com comando (centro ou cantos)
-# receber coordenadas da pos inicial
-# lista de listas de pontos
-
-# Current position of robot: LISTPV POSITION (X,Y,Z,P,R)
-# flush antes de read
 
 
 def dist(point1, point2):
