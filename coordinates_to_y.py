@@ -45,3 +45,7 @@ pf_reta = load_vect(basename + "reta_e_pf_",5,17)
 pi_reta = load_vect(basename + "reta_e_pi_",4,15)
 pf_pass = load_vect(basename + "reta_p_pf_",5,20)
 
+true_pi_reta = [38.73799549745399, -9.138472338872601, 81]
+true_pf_reta = [38.73795591274537, -9.138953366340852, 81]
+true_pf_curva = [38.73790047032445, -9.13911362832949, 81]
+true_pf_pass = [38.73755264660175, -9.139080771269057, 81]
