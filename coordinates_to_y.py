@@ -78,6 +78,44 @@ def get_true_points(name):
     return vect
 
 
+def get_points(vect):
+    
+    
+    ()
+
+
+
+def get_transf(ref,dist1,dist2):
+
+    long_dif_1 = float(ref[1][0])-float(ref[0][0])
+    lat_dif_1 = float(ref[1][1]) - float(ref[0][1])
+    long_dif_2 = float(ref[2][0])-float(ref[1][0])
+    lat_dif_2 = float(ref[2][1]) - float(ref[1][1])
+
+    aux = long_dif_1*lat_dif_2*(-1)
+    aux = aux/lat_dif_1
+    aux = aux + long_dif_2
+    long_to_x = float(dist2[0])/aux - float(dist1[0])/lat_dif_1*lat_dif_2
+
+    aux = aux*lat_dif_1
+    aux = long_dif_1/aux
+    lat_to_x = (-1)*float(dist2[0])*aux + float(dist1[0])/lat_dif_1
+
+
+    aux = long_dif_2*lat_dif_1*(-1)
+    aux = aux/lat_dif_2
+    aux = aux + long_dif_1
+    long_to_y = float(dist1[1])/aux - float(dist2[1])/lat_dif_2*lat_dif_1
+
+    aux = aux*lat_dif_2
+    aux = long_dif_2/aux
+    lat_to_y = (-1)*float(dist1[1])*aux + float(dist2[1])/lat_dif_1
+
+    return [[lat_to_x,long_to_x],[lat_to_y,long_to_y]]
+
+
+
+
 [curva,pf_curva,reta,pf_reta,pi_reta,pf_pass] = get_data()
 
 
@@ -85,11 +123,12 @@ true_pi_reta = [38.73799549745399, -9.138472338872601]
 true_pf_reta = [38.73795591274537, -9.138953366340852]
 true_pf_curva = [38.73790047032445, -9.13911362832949]
 true_pf_pass = [38.73755264660175, -9.139080771269057]
+ref_dist = [[0,33.63],[-9.78,0]]
 
 true_reta = get_true_points("./Lab2./reta_e.csv")
 true_curva = get_true_points("./Lab2./curva_e.csv")
+ref_points = get_true_points("./Lab2./reference.csv")
 
 
+[coord_to_x,coord_to_y] = get_transf(ref_points,ref_dist[0],ref_dist[1])
 
-
-print(true_curva)
