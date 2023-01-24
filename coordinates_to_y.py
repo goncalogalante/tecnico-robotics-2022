@@ -78,10 +78,36 @@ def get_true_points(name):
     return vect
 
 
-def get_points(vect):
-    
-    
-    ()
+def get_points(vect,c_to_x,c_to_y,ref):
+    pts = []
+    l = len(vect)
+
+    if not(l>11):
+        for i in range(l):
+            for k in range(len(vect[i])):
+                if not(vect[i][k][2]=="0.0"):
+                    aux = [0,0]
+                    aux[0] = c_to_x[0]*(float(vect[i][k][0]) - float(ref[0])) + c_to_x[1]*(float(vect[i][k][1]) - float(ref[1]))
+                    aux[1] = c_to_y[0]*(float(vect[i][k][0]) - float(ref[0])) + c_to_y[1]*(float(vect[i][k][1]) - float(ref[1]))
+                    vect[i][k][0] = aux[0]
+                    vect[i][k][1] = aux[1]
+
+                    pts.append(vect[i][k])
+                else:
+                    pass
+    else:
+        for i in range(l):
+            if not(vect[i][1]==0):
+                aux = [0,0]
+                aux[0] = c_to_x[0]*(float(vect[i][0]) - float(ref[0])) + c_to_x[1]*(float(vect[i][1]) - float(ref[1]))
+                aux[1] = c_to_y[0]*(float(vect[i][0]) - float(ref[0])) + c_to_y[1]*(float(vect[i][1]) - float(ref[1]))
+                vect[i][0] = aux[0]
+                vect[i][1] = aux[1]
+
+                pts.append(vect[i])
+            else:
+                pass             
+    return pts
 
 
 
@@ -129,6 +155,32 @@ true_reta = get_true_points("./Lab2./reta_e.csv")
 true_curva = get_true_points("./Lab2./curva_e.csv")
 ref_points = get_true_points("./Lab2./reference.csv")
 
+# print(true_reta)
 
 [coord_to_x,coord_to_y] = get_transf(ref_points,ref_dist[0],ref_dist[1])
 
+pi_reta = get_points(reta,coord_to_x,coord_to_y,true_pi_reta)
+
+true_reta = get_points(true_reta,coord_to_x,coord_to_y,true_pi_reta)
+
+
+print(len(pi_reta))
+x=[]
+y=[]
+for i in range(len(pi_reta)):
+    # print(pi_reta[i])
+    x.append(float(pi_reta[i][0]))
+    y.append(float(pi_reta[i][1]))
+
+xt=[]
+yt=[]
+for i in range(len(true_reta)):
+    print(true_reta[i])
+    xt.append(float(true_reta[i][0]))
+    yt.append(float(true_reta[i][1]))
+
+
+plt.plot(x,y,"ro")
+plt.plot(xt,yt)
+# plt.ylim(0, 14)
+plt.show()
