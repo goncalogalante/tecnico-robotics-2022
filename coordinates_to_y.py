@@ -6,7 +6,6 @@ from matplotlib import pyplot as plt
 # estimativa da posição em cada ponto de cada percurso consoante as medidas
 # trajetória real em cada percurso
 
-
 def load_vect(name,n,max):
     vect = []
 
@@ -38,7 +37,6 @@ def load_vect(name,n,max):
 
     return vect
 
-
 def get_data():
     basename = "./Lab2./Dados./"
     c_e = load_vect(basename + "curva_e_",10,36)
@@ -50,7 +48,6 @@ def get_data():
 
     return [c_e,c_e_pf,r_e,r_e_pf,r_e_pi,r_p_pf]
 
-
 def get_true_points(name):
     rec_file = open(name, "r")
     vect = rec_file.read()
@@ -59,24 +56,8 @@ def get_true_points(name):
         vect[i] = vect[i].split(",")
     
     vect[len(vect)-1]=[0,0]
-
-    # aux = vect[0][0]
-    # vect[0] = [0,0]
-    # vect[0][0]=aux
-    # vect[0][1]=vect[1][0]
-    # for i in range(len(vect)):
-    #     if i==0:
-    #         pass
-    #     elif not(vect[i][1]==""):
-    #         print(i)
-    #         vect[i][0]=vect[i][1]
-    #         vect[i][1]=vect[i+1][0]
-    #     else:
-    #         vect[i]=[0,0]
-    #     ()
     
     return vect
-
 
 def get_points(vect,c_to_x,c_to_y,ref):
     pts = []
@@ -109,8 +90,6 @@ def get_points(vect,c_to_x,c_to_y,ref):
                 pass             
     return pts
 
-
-
 def get_transf(ref,dist1,dist2):
 
     long_dif_1 = float(ref[1][0])-float(ref[0][0])
@@ -139,23 +118,22 @@ def get_transf(ref,dist1,dist2):
 
     return [[lat_to_x,long_to_x],[lat_to_y,long_to_y]]
 
-
-
+def get_ref_points():
+    pi_r = [38.73799549745399, -9.138472338872601]
+    pf_r = [38.73795591274537, -9.138953366340852]
+    pf_c = [38.73790047032445, -9.13911362832949]
+    pf_p = [38.73755264660175, -9.139080771269057]
+    ref_d = [[0,33.63],[-9.78,0]]
+    r = get_true_points("./Lab2./reta_e.csv")
+    c = get_true_points("./Lab2./curva_e.csv")
+    ref_p = get_true_points("./Lab2./reference.csv")
+    
+    return [pi_r,pf_r,pf_c,pf_p,ref_d,r,c,ref_p]
 
 [curva,pf_curva,reta,pf_reta,pi_reta,pf_pass] = get_data()
 
-
-true_pi_reta = [38.73799549745399, -9.138472338872601]
-true_pf_reta = [38.73795591274537, -9.138953366340852]
-true_pf_curva = [38.73790047032445, -9.13911362832949]
-true_pf_pass = [38.73755264660175, -9.139080771269057]
-ref_dist = [[0,33.63],[-9.78,0]]
-
-true_reta = get_true_points("./Lab2./reta_e.csv")
-true_curva = get_true_points("./Lab2./curva_e.csv")
-ref_points = get_true_points("./Lab2./reference.csv")
-
-# print(true_reta)
+[true_pi_reta,true_pf_reta,true_pf_curva,true_pf_pass,
+ref_dist,true_reta,true_curva,ref_points] = get_ref_points()
 
 [coord_to_x,coord_to_y] = get_transf(ref_points,ref_dist[0],ref_dist[1])
 
