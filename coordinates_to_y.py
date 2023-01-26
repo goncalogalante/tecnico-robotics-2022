@@ -92,10 +92,10 @@ def get_points(vect,c_to_x,c_to_y,ref):
 
 def get_transf(ref,dist1,dist2):
 
-    long_dif_1 = float(ref[1][0])-float(ref[0][0])
-    lat_dif_1 = float(ref[1][1]) - float(ref[0][1])
-    long_dif_2 = float(ref[2][0])-float(ref[1][0])
-    lat_dif_2 = float(ref[2][1]) - float(ref[1][1])
+    long_dif_1 = float(ref[1][1])- float(ref[0][1])
+    lat_dif_1 = float(ref[1][0]) - float(ref[0][0])
+    long_dif_2 = float(ref[2][1])- float(ref[1][1])
+    lat_dif_2 = float(ref[2][0]) - float(ref[1][0])
 
     aux = long_dif_1*lat_dif_2*(-1)
     aux = aux/lat_dif_1
@@ -138,24 +138,35 @@ ref_dist,true_reta,true_curva,ref_points] = get_ref_points()
 [coord_to_x,coord_to_y] = get_transf(ref_points,ref_dist[0],ref_dist[1])
 
 pi_reta = get_points(reta,coord_to_x,coord_to_y,true_pi_reta)
+aux = get_points(curva,coord_to_x,coord_to_y,true_pi_reta)
+
+# pi_reta.append(aux)
 
 true_reta = get_points(true_reta,coord_to_x,coord_to_y,true_pi_reta)
+true_aux = get_points(true_curva,coord_to_x,coord_to_y,true_pi_reta)
+# true_reta.append(true_aux)
 
 
-print(len(pi_reta))
 x=[]
 y=[]
 for i in range(len(pi_reta)):
-    # print(pi_reta[i])
     x.append(float(pi_reta[i][0]))
     y.append(float(pi_reta[i][1]))
+
+for i in range(len(aux)):
+    x.append(float(aux[i][0]))
+    y.append(float(aux[i][1]))
 
 xt=[]
 yt=[]
 for i in range(len(true_reta)):
-    print(true_reta[i])
     xt.append(float(true_reta[i][0]))
     yt.append(float(true_reta[i][1]))
+
+for i in range(len(true_aux)):
+    # print(pi_reta[i])
+    xt.append(float(true_aux[i][0]))
+    yt.append(float(true_aux[i][1]))
 
 
 plt.plot(x,y,"ro")
