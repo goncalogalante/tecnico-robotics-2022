@@ -1,6 +1,7 @@
 import numpy as np
 import math
 from matplotlib import pyplot as plt
+import statistics
 
 # estimativa de distância percorrida em cada percurso
 # estimativa da posição em cada ponto de cada percurso consoante as medidas
@@ -62,18 +63,30 @@ def get_true_points(name):
 def get_points(vect,c_to_x,c_to_y,ref):
     pts = []
     l = len(vect)
+    w=0
 
     if not(l>11):
         for i in range(l):
-            for k in range(len(vect[i])):
-                if not(vect[i][k][2]=="0.0"):
-                    aux = [0,0]
-                    aux[0] = c_to_x[0]*(float(vect[i][k][0]) - float(ref[0])) + c_to_x[1]*(float(vect[i][k][1]) - float(ref[1]))
-                    aux[1] = c_to_y[0]*(float(vect[i][k][0]) - float(ref[0])) + c_to_y[1]*(float(vect[i][k][1]) - float(ref[1]))
-                    vect[i][k][0] = aux[0]
-                    vect[i][k][1] = aux[1]
+            try:
+                for k in range(len(vect[i])):
+                    if not(vect[i][k][2]=="0.0"):
+                        aux = [0,0]
+                        aux[0] = c_to_x[0]*(float(vect[i][k][0]) - float(ref[0])) + c_to_x[1]*(float(vect[i][k][1]) - float(ref[1]))
+                        aux[1] = c_to_y[0]*(float(vect[i][k][0]) - float(ref[0])) + c_to_y[1]*(float(vect[i][k][1]) - float(ref[1]))
+                        vect[i][k][0] = aux[0]
+                        vect[i][k][1] = aux[1]
 
-                    pts.append(vect[i][k])
+                        pts.append(vect[i][k])
+                    else:
+                        pass
+            except:
+                if w==0:
+                    aux = [0,0]
+                    aux[0]= c_to_x[0]*(vect[0] - float(ref[0])) + c_to_x[1]*(vect[1] - float(ref[1]))
+                    aux[1]= c_to_y[0]*(vect[0] - float(ref[0])) + c_to_y[1]*(vect[1] - float(ref[1]))
+                    w = w+1
+                    pts.append(aux)
+                    pts = pts[0]
                 else:
                     pass
     else:
@@ -119,9 +132,9 @@ def get_transf(ref,dist1,dist2):
     return [[lat_to_x,long_to_x],[lat_to_y,long_to_y]]
 
 def get_ref_points():
-    pi_r = [38.73799549745399, -9.138472338872601]
-    pf_r = [38.73795591274537, -9.138953366340852]
-    pf_c = [38.73790047032445, -9.13911362832949]
+    pi_r = [38.73798483325617, -9.138458445668222]
+    pf_r = [38.73794851377695, -9.138959453848711]
+    pf_c = [38.73789914742897, -9.139118183872123]
     pf_p = [38.73755264660175, -9.139080771269057]
     ref_d = [[0,33.63],[-9.78,0]]
     r = get_true_points("./Lab2./reta_e.csv")
@@ -130,6 +143,105 @@ def get_ref_points():
     
     return [pi_r,pf_r,pf_c,pf_p,ref_d,r,c,ref_p]
 
+def get_stats(vect):
+    x=[]
+    y=[]
+    for i in range(len(vect)):
+        x.append(float(vect[i][0]))
+        y.append(float(vect[i][1]))
+    mean_x = statistics.fmean(x)
+    mean_y = statistics.fmean(y)
+
+    std_x = statistics.stdev(x)
+    std_y = statistics.stdev(x)
+
+    mean = [mean_x,mean_y]
+    std = [std_x,std_y]
+
+    return [mean,std]
+
+def get_plot(vec1,vec2,tvec1,tvec2,mean,type):
+    """Type 0: 1 true point
+       Type 1: 1 vect of true points
+       Type 2: 2 vects of true points
+       Type 3: 1 true point + mean"""
+
+    if (type==0):
+        x=[]
+        y=[]
+
+        for i in range(len(vec1)):
+            x.append(float(vec1[i][0]))
+            y.append(float(vec1[i][1]))
+        
+        plt.plot(x,y,"ro")
+        plt.plot(tvec1[0],tvec1[1],"bo")
+        plt.show()
+    
+    elif (type==1):
+        x=[]
+        y=[]
+
+        for i in range(len(vec1)):
+            x.append(float(vec1[i][0]))
+            y.append(float(vec1[i][1]))
+
+        xt=[]
+        yt=[]
+        for i in range(len(tvec1)):
+            xt.append(float(tvec1[i][0]))
+            yt.append(float(tvec1[i][1]))
+        
+        plt.plot(x,y,"ro")
+        plt.plot(xt,yt)
+        plt.show()
+    
+    elif (type==2):
+        x=[]
+        y=[]
+
+        for i in range(len(vec1)):
+            x.append(float(vec1[i][0]))
+            y.append(float(vec1[i][1]))
+
+        for i in range(len(vec2)):
+            x.append(float(vec2[i][0]))
+            y.append(float(vec2[i][1]))
+
+        xt=[]
+        yt=[]
+        for i in range(len(tvec1)):
+            xt.append(float(tvec1[i][0]))
+            yt.append(float(tvec1[i][1]))
+
+        for i in range(len(tvec2)):
+            xt.append(float(tvec2[i][0]))
+            yt.append(float(tvec2[i][1]))
+
+        plt.plot(x,y,"ro")
+        plt.plot(xt,yt)
+        plt.show()
+    
+    elif (type==3):
+        x=[]
+        y=[]
+
+        for i in range(len(vec1)):
+            x.append(float(vec1[i][0]))
+            y.append(float(vec1[i][1]))
+
+        plt.plot(x,y,"ro")
+        plt.plot(tvec1[0],tvec1[1],"bo")
+        plt.plot(mean[0],mean[1],"go")
+        plt.show()
+    
+    else:
+        print("Invalid plot type")
+        exit()
+
+    return
+
+
 [curva,pf_curva,reta,pf_reta,pi_reta,pf_pass] = get_data()
 
 [true_pi_reta,true_pf_reta,true_pf_curva,true_pf_pass,
@@ -137,39 +249,27 @@ ref_dist,true_reta,true_curva,ref_points] = get_ref_points()
 
 [coord_to_x,coord_to_y] = get_transf(ref_points,ref_dist[0],ref_dist[1])
 
-pi_reta = get_points(reta,coord_to_x,coord_to_y,true_pi_reta)
-aux = get_points(curva,coord_to_x,coord_to_y,true_pi_reta)
-
-# pi_reta.append(aux)
-
-true_reta = get_points(true_reta,coord_to_x,coord_to_y,true_pi_reta)
-true_aux = get_points(true_curva,coord_to_x,coord_to_y,true_pi_reta)
-# true_reta.append(true_aux)
+pi_reta_xy = get_points(pi_reta,coord_to_x,coord_to_y,true_pi_reta)
+pf_reta_xy = get_points(pf_reta,coord_to_x,coord_to_y,true_pi_reta)
+pf_curva_xy = get_points(pf_curva,coord_to_x,coord_to_y,true_pi_reta)
+pf_pass_xy = get_points(pf_pass,coord_to_x,coord_to_y,true_pi_reta)
+reta_xy = get_points(reta,coord_to_x,coord_to_y,true_pi_reta)
+curva_xy = get_points(curva,coord_to_x,coord_to_y,true_pi_reta)
 
 
-x=[]
-y=[]
-for i in range(len(pi_reta)):
-    x.append(float(pi_reta[i][0]))
-    y.append(float(pi_reta[i][1]))
-
-for i in range(len(aux)):
-    x.append(float(aux[i][0]))
-    y.append(float(aux[i][1]))
-
-xt=[]
-yt=[]
-for i in range(len(true_reta)):
-    xt.append(float(true_reta[i][0]))
-    yt.append(float(true_reta[i][1]))
-
-for i in range(len(true_aux)):
-    # print(pi_reta[i])
-    xt.append(float(true_aux[i][0]))
-    yt.append(float(true_aux[i][1]))
+true_pi_reta_xy = get_points(true_pi_reta,coord_to_x,coord_to_y,true_pi_reta)
+true_pf_reta_xy = get_points(true_pf_reta,coord_to_x,coord_to_y,true_pi_reta)
+true_pf_curva_xy = get_points(true_pf_curva,coord_to_x,coord_to_y,true_pi_reta)
+true_pf_pass_xy = get_points(true_pf_pass,coord_to_x,coord_to_y,true_pi_reta)
+true_reta_xy = get_points(true_reta,coord_to_x,coord_to_y,true_pi_reta)
+true_curva_xy = get_points(true_curva,coord_to_x,coord_to_y,true_pi_reta)
 
 
-plt.plot(x,y,"ro")
-plt.plot(xt,yt)
-# plt.ylim(0, 14)
-plt.show()
+[mean_pi_r,std_pi_r] = get_stats(pi_reta_xy)
+[mean_pf_r,std_pf_r] = get_stats(pf_reta_xy)
+[mean_pf_c,std_pf_c] = get_stats(pf_curva_xy)
+[mean_pf_p,std_pf_p] = get_stats(pf_pass_xy)
+
+print(reta)
+
+get_plot(reta_xy,0,true_reta_xy,0,0,1)
