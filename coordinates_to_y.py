@@ -2,6 +2,8 @@ import numpy as np
 import math
 from matplotlib import pyplot as plt
 import statistics
+import time
+from datetime import datetime
 
 # estimativa de distância percorrida em cada percurso
 # estimativa da posição em cada ponto de cada percurso consoante as medidas
@@ -69,17 +71,23 @@ def get_points(vect,c_to_x,c_to_y,ref):
         for i in range(l):
             try:
                 for k in range(len(vect[i])):
-                    if not(vect[i][k][2]=="0.0"):
+                    # For data vectors, appended with 0 at end of vectors
+                    if not(vect[i][k][2]=="0.0"): 
                         aux = [0,0]
                         aux[0] = c_to_x[0]*(float(vect[i][k][0]) - float(ref[0])) + c_to_x[1]*(float(vect[i][k][1]) - float(ref[1]))
                         aux[1] = c_to_y[0]*(float(vect[i][k][0]) - float(ref[0])) + c_to_y[1]*(float(vect[i][k][1]) - float(ref[1]))
+                        auxt = vect[i][k][3].split(".")
+                        temp = auxt[0].split(":")
+                        secs = float(temp[0])*3600 + float(temp[1])*60 + float(temp[2]) + float(auxt[1])/1000000
                         vect[i][k][0] = aux[0]
                         vect[i][k][1] = aux[1]
+                        vect[i][k][3] = secs
 
                         pts.append(vect[i][k])
                     else:
                         pass
             except:
+                # For true vectors with only 1 point
                 if w==0:
                     aux = [0,0]
                     aux[0]= c_to_x[0]*(vect[0] - float(ref[0])) + c_to_x[1]*(vect[1] - float(ref[1]))
@@ -90,6 +98,7 @@ def get_points(vect,c_to_x,c_to_y,ref):
                 else:
                     pass
     else:
+        # for true vectors
         for i in range(l):
             if not(vect[i][1]==0):
                 aux = [0,0]
@@ -241,35 +250,86 @@ def get_plot(vec1,vec2,tvec1,tvec2,mean,type):
 
     return
 
+def data_to_real(vect,truev):
+    count = 0
+    time_int = []
+    pts = []
+
+    for i in range(len(vect)):
+        if not(i==0):
+            if ((float(vect[i][3]) - float(vect[i-1][3]))<10):
+                pass
+            else:
+                if count==0:
+                    aux = [0,0]
+                    count = count+1
+                    aux[0]= i
+                    aux[1]= float(vect[i-1][3]) - float(vect[0][3])
+                    time_int.append(aux)
+                    print(time_int)
+                else:
+                    aux = [0,0]
+                    count = count+1
+                    aux[0]= i
+                    temp = time_int[count-2][0]
+                    aux[1]= float(vect[i-1][3]) - float(vect[temp][3])
+                    time_int.append(aux)
+                    print(time_int)
+        else:
+            pass
+    aux = [0,0]
+    count = count+1
+    aux[0]= len(vect)
+    temp = time_int[count-2][0]
+    aux[1]= float(vect[i-1][3]) - float(vect[temp][3])
+    time_int.append(aux)
+    print(time_int)
+
+    print(vect[time_int[6][0]-1])
+    print(vect[time_int[6][0]])
+    print(vect[time_int[6][0]+1])
+
+    for i in range(len(time_int)):
+
+        for k in range(time_int[i][0]):
+
+            ()
+        
+
+
+    return 0
+
 
 [curva,pf_curva,reta,pf_reta,pi_reta,pf_pass] = get_data()
+
+# print(reta)
 
 [true_pi_reta,true_pf_reta,true_pf_curva,true_pf_pass,
 ref_dist,true_reta,true_curva,ref_points] = get_ref_points()
 
 [coord_to_x,coord_to_y] = get_transf(ref_points,ref_dist[0],ref_dist[1])
 
-pi_reta_xy = get_points(pi_reta,coord_to_x,coord_to_y,true_pi_reta)
-pf_reta_xy = get_points(pf_reta,coord_to_x,coord_to_y,true_pi_reta)
-pf_curva_xy = get_points(pf_curva,coord_to_x,coord_to_y,true_pi_reta)
-pf_pass_xy = get_points(pf_pass,coord_to_x,coord_to_y,true_pi_reta)
+# pi_reta_xy = get_points(pi_reta,coord_to_x,coord_to_y,true_pi_reta)
+# pf_reta_xy = get_points(pf_reta,coord_to_x,coord_to_y,true_pi_reta)
+# pf_curva_xy = get_points(pf_curva,coord_to_x,coord_to_y,true_pi_reta)
+# pf_pass_xy = get_points(pf_pass,coord_to_x,coord_to_y,true_pi_reta)
 reta_xy = get_points(reta,coord_to_x,coord_to_y,true_pi_reta)
 curva_xy = get_points(curva,coord_to_x,coord_to_y,true_pi_reta)
 
 
-true_pi_reta_xy = get_points(true_pi_reta,coord_to_x,coord_to_y,true_pi_reta)
-true_pf_reta_xy = get_points(true_pf_reta,coord_to_x,coord_to_y,true_pi_reta)
-true_pf_curva_xy = get_points(true_pf_curva,coord_to_x,coord_to_y,true_pi_reta)
-true_pf_pass_xy = get_points(true_pf_pass,coord_to_x,coord_to_y,true_pi_reta)
+# true_pi_reta_xy = get_points(true_pi_reta,coord_to_x,coord_to_y,true_pi_reta)
+# true_pf_reta_xy = get_points(true_pf_reta,coord_to_x,coord_to_y,true_pi_reta)
+# true_pf_curva_xy = get_points(true_pf_curva,coord_to_x,coord_to_y,true_pi_reta)
+# true_pf_pass_xy = get_points(true_pf_pass,coord_to_x,coord_to_y,true_pi_reta)
 true_reta_xy = get_points(true_reta,coord_to_x,coord_to_y,true_pi_reta)
-true_curva_xy = get_points(true_curva,coord_to_x,coord_to_y,true_pi_reta)
+# true_curva_xy = get_points(true_curva,coord_to_x,coord_to_y,true_pi_reta)
 
 
-[mean_pi_r,std_pi_r] = get_stats(pi_reta_xy)
-[mean_pf_r,std_pf_r] = get_stats(pf_reta_xy)
-[mean_pf_c,std_pf_c] = get_stats(pf_curva_xy)
-[mean_pf_p,std_pf_p] = get_stats(pf_pass_xy)
+# [mean_pi_r,std_pi_r] = get_stats(pi_reta_xy)
+# [mean_pf_r,std_pf_r] = get_stats(pf_reta_xy)
+# [mean_pf_c,std_pf_c] = get_stats(pf_curva_xy)
+# [mean_pf_p,std_pf_p] = get_stats(pf_pass_xy)
 
-print(reta)
+data_to_real(reta_xy,true_reta_xy)
 
-get_plot(reta_xy,0,true_reta_xy,0,0,1)
+# get_plot(reta_xy,0,true_reta_xy,0,0,1)
