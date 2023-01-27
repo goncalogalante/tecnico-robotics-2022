@@ -9,6 +9,15 @@ from datetime import datetime
 # estimativa da posição em cada ponto de cada percurso consoante as medidas
 # trajetória real em cada percurso
 
+def dist(point1, point2):
+  x1, y1 = point1
+  x2, y2 = point2
+  return math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+
+def round_up(n, decimals=0):
+    multiplier = 10 ** decimals
+    return math.ceil(n * multiplier) / multiplier
+
 def load_vect(name,n,max):
     vect = []
 
@@ -266,7 +275,7 @@ def data_to_real(vect,truev):
                     aux[0]= i
                     aux[1]= float(vect[i-1][3]) - float(vect[0][3])
                     time_int.append(aux)
-                    print(time_int)
+                    # print(time_int)
                 else:
                     aux = [0,0]
                     count = count+1
@@ -274,9 +283,10 @@ def data_to_real(vect,truev):
                     temp = time_int[count-2][0]
                     aux[1]= float(vect[i-1][3]) - float(vect[temp][3])
                     time_int.append(aux)
-                    print(time_int)
+                    # print(time_int)
         else:
             pass
+
     aux = [0,0]
     count = count+1
     aux[0]= len(vect)
@@ -285,19 +295,62 @@ def data_to_real(vect,truev):
     time_int.append(aux)
     print(time_int)
 
-    print(vect[time_int[6][0]-1])
-    print(vect[time_int[6][0]])
-    print(vect[time_int[6][0]+1])
+    # print(vect[time_int[6][0]-1])
+    # print(vect[time_int[6][0]])
+    # print(vect[time_int[6][0]+1])
 
-    for i in range(len(time_int)):
+    for i in range(len(time_int)-1):
+        n_points = (time_int[i+1][0])-(time_int[i][0])
+        aux = [0,0,0]
+        end_id = time_int[i+1][0]-1
+        start_id = time_int[i][0]
 
-        for k in range(time_int[i][0]):
-
-            ()
-        
-
-
-    return 0
+        true_int = round_up(float(time_int[i+1][1])/float(len(truev)),2)
+        if ((dist([float(vect[start_id][0]),float(vect[start_id][1])],truev[0]))<(dist([float(vect[start_id][0]),float(vect[start_id][1])],truev[len(truev)-1]))):
+            true_start = 0
+            aux = [0,0,0]
+            aux[0] = vect[start_id][0]
+            aux[1] = vect[start_id][1]
+            aux[2] = true_start
+            pts.append(aux)
+            for k in range(n_points):
+                if k==0:
+                    pass
+                # not(start_id+k == end_id)
+                else :
+                    # print(k)
+                    aux = [0,0,0]
+                    aux_int = float(vect[start_id+k][3]) - float(vect[start_id][3])
+                    int_id = math.floor(aux_int/true_int)
+                    aux[0] = vect[start_id+k][0]
+                    aux[1] = vect[start_id+k][1]
+                    aux[2] = int(true_start)+int_id 
+                    # print(aux[0])
+                    # print(aux[1])
+                    # print(aux[2])
+                    # print(aux)
+                    pts.append(aux)
+        else:
+            true_start = len(truev)-1
+            aux = [0,0,0]
+            aux[0] = vect[start_id][0]
+            aux[1] = vect[start_id][1]
+            aux[2] = true_start
+            pts.append(aux)
+            for k in range(n_points):
+                if k==0:
+                    pass
+                # not(start_id+k == end_id)
+                else :
+                    aux = [0,0,0]
+                    aux_int = float(vect[start_id+k][3]) - float(vect[start_id][3])
+                    int_id = round(aux_int/true_int)
+                    aux[0] = vect[start_id+k][0]
+                    aux[1] = vect[start_id+k][1]
+                    aux[2] = int(true_start)-int_id
+                    pts.append(aux)  
+    
+    return pts
 
 
 [curva,pf_curva,reta,pf_reta,pi_reta,pf_pass] = get_data()
@@ -330,6 +383,8 @@ true_reta_xy = get_points(true_reta,coord_to_x,coord_to_y,true_pi_reta)
 # [mean_pf_c,std_pf_c] = get_stats(pf_curva_xy)
 # [mean_pf_p,std_pf_p] = get_stats(pf_pass_xy)
 
-data_to_real(reta_xy,true_reta_xy)
-
+yo = data_to_real(reta_xy,true_reta_xy)
+print(len(yo))
+for i in range(len(yo)):
+    print(yo[i])
 # get_plot(reta_xy,0,true_reta_xy,0,0,1)
