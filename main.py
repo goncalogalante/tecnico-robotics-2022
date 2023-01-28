@@ -185,7 +185,7 @@ weights =    [1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
 print("\n>>> Self-Driving Car simulation <<<")
 
 
-print("\n> Input below the inital point and the final point of the trajectory")
+print("\n> Input below: \n 1) the inital point of the trajectory\n 2) the final point of the trajectory\n 3) the constant value PO")
 print("> Advise: The points can be seen from the file 'points.png'")
 
 # # plot the nodes on the map to chose the inicial and goal points
@@ -214,11 +214,15 @@ while True:
         break
     else:
         print(">> Error: goal point must be between 0 and 32")
+        
 
+user_PO_value = input("Enter the PO constant value: ")
+print(">> Done! The PO constant is set to: ", user_PO_value)
 
 # user inputs to int
 user_initial_point = int(user_initial_point)
 user_goal_point = int(user_goal_point)
+user_PO_value = int(user_PO_value)
 
 
 # initial node and goal node 
@@ -270,7 +274,9 @@ errors_y = []
 dt = 0.95
 times = []
 car_positions = []
+energy_spent_list = []
 
+current_vel = 0
 # control and move the car according to the kinematics
 for i, desired_pos in enumerate(trajectory):
     
@@ -280,18 +286,26 @@ for i, desired_pos in enumerate(trajectory):
     
     control_signal = car_control.controlador(current_pos, desired_pos, dt)
     
+    previous_vel = current_vel
     current_vel = control_signal[0]
     #print("Control signal - velocity:", current_vel)
     angular_vel = control_signal[1]
     #print("Control signal - ang velocity:", angular_vel)
     
     current_pos = kinematics(current_pos, current_vel, angular_vel, dt)
+    
+    acceleration = (current_vel - previous_vel) / dt
+    energy_spent = energy_budget(mass=vehicle_specs.Mass, velocity=current_vel, acceleration=acceleration, P0 = user_PO_value, time_interval=dt)
+    energy_spent_list.append(energy_spent)
+    
+    
     errors_x.append(error_[0])
     errors_y.append(error_[1])
     car_positions.append(current_pos)
     #print("----------------------------- X ------------------------------")
     times.append(dt*i)
 
+total_energy_spent = sum(energy_spent_list)
 # variables to plot
 x = [point[0] for point in trajectory]
 y = [point[1] for point in trajectory]
@@ -365,5 +379,5 @@ plt.connect('key_press_event', key_press_close)
 plt.show()
 
 
-print("\n- Total Energy Spent:")
+print("\n- Total Energy Spent:", round(total_energy_spent,ndigits=2),"Joules")
 print("- Total Nº of Colisions:")

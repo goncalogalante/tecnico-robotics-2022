@@ -92,6 +92,7 @@ def get_points(vect,c_to_x,c_to_y,ref):
             try:
                 for k in range(len(vect[i])):
                     # For data vectors, appended with 0 at end of vectors
+                    auxt = []
                     if not(vect[i][k][2]=="0.0"): 
                         aux = [0,0]
                         aux[0] = c_to_x[0]*(float(vect[i][k][0]) - float(ref[0])) + c_to_x[1]*(float(vect[i][k][1]) - float(ref[1]))
@@ -418,19 +419,12 @@ def get_stats_vec(vect,truev):
         pts.append(aux)
     return pts
 
-def meas_stats(vect):
-    # ytotal=0
-    # xtotal=0
-    # for i in range(len(vect)):
-    #     if vect[i][0] !=200:
-    #         xtotal= xtotal+vect[i][0]
-    #         ytotal= ytotal+vect[i][1]
-
+def error_stats(vect):
     x=[]
     y=[]
     for i in range(len(vect)):
-        if vect[i][0]!=200:
-        # if (vect[i][0] <5) and (vect[i][1] <5) :
+        # if vect[i][0]!=200:
+        if (vect[i][0] <5) and (vect[i][1] <5) :
             x.append(float(vect[i][0]))
             y.append(float(vect[i][1]))
     mean_x = statistics.fmean(x)
@@ -451,28 +445,15 @@ ref_dist,true_reta,true_curva,ref_points] = get_ref_points()
 
 [coord_to_x,coord_to_y] = get_transf(ref_points,ref_dist[0],ref_dist[1])
 
-# pi_reta_xy = get_points(pi_reta,coord_to_x,coord_to_y,true_pi_reta)
-# pf_reta_xy = get_points(pf_reta,coord_to_x,coord_to_y,true_pi_reta)
-# pf_curva_xy = get_points(pf_curva,coord_to_x,coord_to_y,true_pi_reta)
-# pf_pass_xy = get_points(pf_pass,coord_to_x,coord_to_y,true_pi_reta)
+pi_reta_xy = get_points(pi_reta,coord_to_x,coord_to_y,true_pi_reta)
+pf_reta_xy = get_points(pf_reta,coord_to_x,coord_to_y,true_pi_reta)
+pf_curva_xy = get_points(pf_curva,coord_to_x,coord_to_y,true_pi_reta)
+pf_pass_xy = get_points(pf_pass,coord_to_x,coord_to_y,true_pi_reta)
 # reta_xy_faulty = get_points(reta,coord_to_x,coord_to_y,true_pi_reta)
+
 for i in range(len(reta[4])):
     reta[4][i] = reta[4][55]
 
-# for i in range(len(reta[0])):
-#     reta[0][i] = reta[4][55]
-
-# for i in range(len(reta[2])):
-#     reta[2][i] = reta[4][55]
-
-# for i in range(23,26):
-#     reta[4][i] = reta[4][55]
-
-# for i in range(27,41):
-#     reta[4][i] = reta[4][55]
-
-# for i in range(len(reta)):
-#     print(reta[i])
 reta_xy = get_points(reta,coord_to_x,coord_to_y,true_pi_reta)
 
 
@@ -480,26 +461,25 @@ reta_xy = get_points(reta,coord_to_x,coord_to_y,true_pi_reta)
 curva_xy = get_points(curva,coord_to_x,coord_to_y,true_pi_reta)
 
 
-# true_pi_reta_xy = get_points(true_pi_reta,coord_to_x,coord_to_y,true_pi_reta)
-# true_pf_reta_xy = get_points(true_pf_reta,coord_to_x,coord_to_y,true_pi_reta)
-# true_pf_curva_xy = get_points(true_pf_curva,coord_to_x,coord_to_y,true_pi_reta)
-# true_pf_pass_xy = get_points(true_pf_pass,coord_to_x,coord_to_y,true_pi_reta)
+true_pi_reta_xy = get_points(true_pi_reta,coord_to_x,coord_to_y,true_pi_reta)
+true_pf_reta_xy = get_points(true_pf_reta,coord_to_x,coord_to_y,true_pi_reta)
+true_pf_curva_xy = get_points(true_pf_curva,coord_to_x,coord_to_y,true_pi_reta)
+true_pf_pass_xy = get_points(true_pf_pass,coord_to_x,coord_to_y,true_pi_reta)
 true_reta_xy = get_points(true_reta,coord_to_x,coord_to_y,true_pi_reta)
 true_curva_xy = get_points(true_curva,coord_to_x,coord_to_y,true_pi_reta)
 
 
-# [mean_pi_r,std_pi_r] = get_stats_point(pi_reta_xy)
-# [mean_pf_r,std_pf_r] = get_stats_point(pf_reta_xy)
-# [mean_pf_c,std_pf_c] = get_stats_point(pf_curva_xy)
-# [mean_pf_p,std_pf_p] = get_stats_point(pf_pass_xy)
+[mean_pi_r,std_pi_r] = get_stats_point(pi_reta_xy)
+[mean_pf_r,std_pf_r] = get_stats_point(pf_reta_xy)
+[mean_pf_c,std_pf_c] = get_stats_point(pf_curva_xy)
+[mean_pf_p,std_pf_p] = get_stats_point(pf_pass_xy)
 
-yo = get_stats_vec(reta_xy,true_reta_xy)
-print(yo)
+error = get_stats_vec(curva_xy,true_curva_xy)
 # print(len(true_reta_xy))
 
-# get_plot(reta_xy,0,true_reta_xy,0,yo,4)
+# get_plot(reta_xy,0,true_reta_xy,0,error,4)
 
-[mean,std] = meas_stats(yo)
+[mean,std] = error_stats(error)
 
 print(mean)
 print(std)
