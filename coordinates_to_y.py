@@ -99,11 +99,13 @@ def get_points(vect,c_to_x,c_to_y,ref):
                         auxt = vect[i][k][3].split(".")
                         temp = auxt[0].split(":")
                         secs = float(temp[0])*3600 + float(temp[1])*60 + float(temp[2]) + float(auxt[1])/1000000
+                        yo = vect[i][k][1]
                         vect[i][k][0] = aux[0]
                         vect[i][k][1] = aux[1]
                         vect[i][k][3] = secs
-                        if vect[i][k][1]=='39.71687340032252':
-                            count = count +1
+                        # if vect[i][k][1]=='10.114817715546948':
+                        #     count = count +1
+                        #     print(yo)
 
                         pts.append(vect[i][k])
                     else:
@@ -274,7 +276,7 @@ def get_plot(vec1,vec2,tvec1,tvec2,mean,type):
         for i in range(len(tvec1)):
             x.append(float(tvec1[i][0]))
             y.append(float(tvec1[i][1]))
-            if not(mean[i]==0):
+            if not(mean[i][0]==200):
                 ellipse(tvec1[i],mean[i])
             
         # xt=[]
@@ -307,17 +309,15 @@ def data_to_real(vect,truev):
                     aux = [0,0]
                     count = count+1
                     aux[0]= i
-                    aux[1]= float(vect[i-1][3]) - float(vect[0][3])
+                    aux[1]= float(vect[i-1][3]) - float(vect[0][3])+0.5
                     time_int.append(aux)
-                    print(time_int)
                 else:
                     aux = [0,0]
                     count = count+1
                     aux[0]= i
                     temp = time_int[count-2][0]
-                    aux[1]= float(vect[i-1][3]) - float(vect[temp][3])
+                    aux[1]= float(vect[i-1][3]) - float(vect[temp][3])+0.5
                     time_int.append(aux)
-                    # print(time_int)
         else:
             pass
 
@@ -325,9 +325,10 @@ def data_to_real(vect,truev):
     count = count+1
     aux[0]= len(vect)
     temp = time_int[count-2][0]
-    aux[1]= float(vect[i-1][3]) - float(vect[temp][3])
+    aux[1]= float(vect[i][3]) - float(vect[temp][3])+0.5
     time_int.append(aux)
 
+    # print(time_int)
     cond = 0
     for i in range(len(time_int)):
         if not(cond==0):
@@ -336,12 +337,12 @@ def data_to_real(vect,truev):
             n_points = (time_int[i+1][0])-(time_int[i][0])
             end_id = time_int[i+1][0]-1
             start_id = time_int[i][0]
-            true_int = round_up(float(time_int[i+1][1])/float(len(truev)),2)
+            true_int = round_up(float(time_int[i+1][1])/float(len(truev)),6)
         else:
             n_points = time_int[i][0]
             end_id = time_int[i][0]-1
             start_id = 0
-            true_int = round_up(float(time_int[i][1])/float(len(truev)),2)
+            true_int = round_up(float(time_int[i][1])/float(len(truev)),6)
             cond = cond+1
         aux = [0,0,0]
 
@@ -355,19 +356,13 @@ def data_to_real(vect,truev):
             for k in range(n_points):
                 if k==0:
                     pass
-                # not(start_id+k == end_id)
                 else :
-                    # print(k)
                     aux = [0,0,0]
                     aux_int = float(vect[start_id+k][3]) - float(vect[start_id][3])
                     int_id = math.floor(aux_int/true_int)
                     aux[0] = vect[start_id+k][0]
                     aux[1] = vect[start_id+k][1]
                     aux[2] = int(true_start)+int_id 
-                    # print(aux[0])
-                    # print(aux[1])
-                    # print(aux[2])
-                    # print(aux)
                     pts.append(aux)
         else:
             true_start = len(truev)-1
@@ -379,7 +374,6 @@ def data_to_real(vect,truev):
             for k in range(n_points):
                 if k==0:
                     pass
-                # not(start_id+k == end_id)
                 else :
                     aux = [0,0,0]
                     aux_int = float(vect[start_id+k][3]) - float(vect[start_id][3])
@@ -390,7 +384,9 @@ def data_to_real(vect,truev):
                     pts.append(aux)
         if cond==1:
             i=0
-    
+    # for i in range(len(pts)):
+    #     print(pts[i])
+
     return pts
 
 def get_stats_vec(vect,truev):
@@ -408,18 +404,44 @@ def get_stats_vec(vect,truev):
         if not(n==0):
             aux = [aux[0]/n,aux[1]/n]
             aux = [abs(aux[0]- float(truev[i][0])), abs(aux[1] - float(truev[i][1]))]
-            if (aux[0]>8) or (aux[1]>8):
-                # print(n)
-                # print(truev[i])
-                # print(i)
-                for j in range(len(vect)):
-                    if vect[j][2] == i:
-                        print(vect[j])
-                        print(j)
-
+            # if (aux[0]>5) or (aux[1]>5):
+            #     print(n)
+            #     print(truev[i])
+            #     print(i)
+            #     for j in range(len(vect)):
+            #         if vect[j][2] == i:
+            #             print(vect[j])
+            #             print(j)
+        else:
+            aux=[200,200]
 
         pts.append(aux)
     return pts
+
+def meas_stats(vect):
+    # ytotal=0
+    # xtotal=0
+    # for i in range(len(vect)):
+    #     if vect[i][0] !=200:
+    #         xtotal= xtotal+vect[i][0]
+    #         ytotal= ytotal+vect[i][1]
+
+    x=[]
+    y=[]
+    for i in range(len(vect)):
+        if vect[i][0]!=200:
+        # if (vect[i][0] <5) and (vect[i][1] <5) :
+            x.append(float(vect[i][0]))
+            y.append(float(vect[i][1]))
+    mean_x = statistics.fmean(x)
+    mean_y = statistics.fmean(y)
+
+    std_x = statistics.stdev(x)
+    std_y = statistics.stdev(x)
+
+    mean = [mean_x,mean_y]
+    std = [std_x,std_y]
+    return [mean,std]
 
 [curva,pf_curva,reta,pf_reta,pi_reta,pf_pass] = get_data()
 
@@ -434,8 +456,20 @@ ref_dist,true_reta,true_curva,ref_points] = get_ref_points()
 # pf_curva_xy = get_points(pf_curva,coord_to_x,coord_to_y,true_pi_reta)
 # pf_pass_xy = get_points(pf_pass,coord_to_x,coord_to_y,true_pi_reta)
 # reta_xy_faulty = get_points(reta,coord_to_x,coord_to_y,true_pi_reta)
-for i in range(27,40):
+for i in range(len(reta[4])):
     reta[4][i] = reta[4][55]
+
+# for i in range(len(reta[0])):
+#     reta[0][i] = reta[4][55]
+
+# for i in range(len(reta[2])):
+#     reta[2][i] = reta[4][55]
+
+# for i in range(23,26):
+#     reta[4][i] = reta[4][55]
+
+# for i in range(27,41):
+#     reta[4][i] = reta[4][55]
 
 # for i in range(len(reta)):
 #     print(reta[i])
@@ -443,7 +477,7 @@ reta_xy = get_points(reta,coord_to_x,coord_to_y,true_pi_reta)
 
 
 
-# curva_xy = get_points(curva,coord_to_x,coord_to_y,true_pi_reta)
+curva_xy = get_points(curva,coord_to_x,coord_to_y,true_pi_reta)
 
 
 # true_pi_reta_xy = get_points(true_pi_reta,coord_to_x,coord_to_y,true_pi_reta)
@@ -451,7 +485,7 @@ reta_xy = get_points(reta,coord_to_x,coord_to_y,true_pi_reta)
 # true_pf_curva_xy = get_points(true_pf_curva,coord_to_x,coord_to_y,true_pi_reta)
 # true_pf_pass_xy = get_points(true_pf_pass,coord_to_x,coord_to_y,true_pi_reta)
 true_reta_xy = get_points(true_reta,coord_to_x,coord_to_y,true_pi_reta)
-# true_curva_xy = get_points(true_curva,coord_to_x,coord_to_y,true_pi_reta)
+true_curva_xy = get_points(true_curva,coord_to_x,coord_to_y,true_pi_reta)
 
 
 # [mean_pi_r,std_pi_r] = get_stats_point(pi_reta_xy)
@@ -460,6 +494,12 @@ true_reta_xy = get_points(true_reta,coord_to_x,coord_to_y,true_pi_reta)
 # [mean_pf_p,std_pf_p] = get_stats_point(pf_pass_xy)
 
 yo = get_stats_vec(reta_xy,true_reta_xy)
+print(yo)
+# print(len(true_reta_xy))
 
+# get_plot(reta_xy,0,true_reta_xy,0,yo,4)
 
-get_plot(reta_xy,0,true_reta_xy,0,yo,4)
+[mean,std] = meas_stats(yo)
+
+print(mean)
+print(std)
